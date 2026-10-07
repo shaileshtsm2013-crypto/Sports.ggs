@@ -1,0 +1,9 @@
+{
+  "points_per_defender_dismissed": 1,
+  "turn_duration_minutes": 9,
+  "innings_count": 2,
+  "runners_per_batch": 3,
+  "total_chasers": 9,
+  "sitting_chasers": 8,
+  "active_chasers": 1
+}

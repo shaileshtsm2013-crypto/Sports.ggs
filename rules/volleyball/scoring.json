@@ -1,0 +1,13 @@
+{
+  "system": "Rally Point System",
+  "points_to_win_set": 25,
+  "points_to_win_deciding_set": 15,
+  "minimum_advantage": 2,
+  "sets_to_win_match": 3,
+  "max_sets": 5,
+  "point_triggers": [
+    "Ball lands inside opponent court boundary",
+    "Opponent commits a fault (net touch, lift, double contact, out of bounds)",
+    "Opponent receives a penalty card (Red Card)"
+  ]
+}

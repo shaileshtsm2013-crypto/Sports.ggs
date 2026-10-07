@@ -1,0 +1,11 @@
+{
+  "touch_point": 1,
+  "tackle_point": 1,
+  "bonus_point": 1,
+  "super_tackle_points": 2,
+  "all_out_lona_points": 2,
+  "super_raid_definition": "A raid resulting in 3 or more points scored",
+  "raid_time_limit_sec": 30,
+  "defenders_required_for_bonus": 6,
+  "defenders_for_super_tackle": 3
+}

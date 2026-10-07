@@ -1,0 +1,24 @@
+{
+  "fouls": [
+    {
+      "name": "Direction Fault (Changing Direction)",
+      "description": "An active chaser turns around or reverses direction towards the opposite post before reaching the Free Zone.",
+      "penalty": "Foul signal; any touch made during or after the foul is void, runner cannot be dismissed."
+    },
+    {
+      "name": "Central Lane Crossing Violation",
+      "description": "An active chaser's body crosses or steps completely over the central lane to the other half without going around the post.",
+      "penalty": "Foul called; chaser must immediately return to the correct side without tagging defenders."
+    },
+    {
+      "name": "False / Silent Kho",
+      "description": "Touching a sitting teammate without clearly and audibly saying 'Kho', or giving Kho while the recipient is not fully seated.",
+      "penalty": "Foul, chaser must re-give Kho or forfeit advantage."
+    },
+    {
+      "name": "Shoulder Line Fault (Receding)",
+      "description": "An active chaser turns their shoulders more than 90 degrees away from the taken direction while chasing.",
+      "penalty": "Foul; play is reset by the referee."
+    }
+  ]
+}

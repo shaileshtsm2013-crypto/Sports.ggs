@@ -1,0 +1,29 @@
+{
+  "fouls": [
+    {
+      "name": "Cant Loss / Breath Fault",
+      "description": "Raider loses the continuous audible cant ('Kabaddi') during the raid.",
+      "penalty": "Raider is declared out, 1 point to opponent."
+    },
+    {
+      "name": "Empty Raid Violation (Do-or-Die)",
+      "description": "If a team conducts two consecutive empty raids (no points scored), the 3rd raid becomes a 'Do-or-Die' raid. If no point is scored, the raider is out.",
+      "penalty": "Raider is declared out, 1 point to defending team."
+    },
+    {
+      "name": "Stepping Out of Bounds",
+      "description": "A player steps outside the court line or into the lobby before a touch is made.",
+      "penalty": "Player is declared out."
+    },
+    {
+      "name": "Violent / Dangerous Tackle",
+      "description": "Grabbing the raider by hair, throat, clothes, or intentionally tripping/injuring.",
+      "penalty": "Foul, technical point awarded, warning or card."
+    },
+    {
+      "name": "Crossing Midline Early (Pursuit Fault)",
+      "description": "More than one raider enters the opponent's court simultaneously or defenders cross midline before raid completion.",
+      "penalty": "Technical point awarded to opposing team."
+    }
+  ]
+}

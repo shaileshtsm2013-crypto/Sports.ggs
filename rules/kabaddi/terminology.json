@@ -1,0 +1,40 @@
+{
+  "terms": [
+    {
+      "term": "Raider",
+      "definition": "The attacking player who crosses the midline into the opponent's territory while chanting 'Kabaddi'."
+    },
+    {
+      "term": "Anti / Defender",
+      "definition": "Players in their own territory working together to tackle the incoming raider or avoid being tagged."
+    },
+    {
+      "term": "Cant",
+      "definition": "The continuous, clear, audible chanting of the word 'Kabaddi' without pause or breathing in."
+    },
+    {
+      "term": "Super Tackle",
+      "definition": "A tackle executed by 3 or fewer defenders, earning 2 points instead of 1."
+    },
+    {
+      "term": "Super Raid",
+      "definition": "A single raid where the raider secures 3 or more points (through touches and/or bonus)."
+    },
+    {
+      "term": "Do-or-Die Raid",
+      "definition": "The 3rd consecutive raid without points by a team, where the raider must score or be declared out."
+    },
+    {
+      "term": "Lona / All Out",
+      "definition": "When an entire team is dismissed; the opposing team receives 2 bonus points and the dismissed team is revived."
+    },
+    {
+      "term": "Dubki",
+      "definition": "An agile evasive move where a raider ducks low underneath an oncoming chain of defenders."
+    },
+    {
+      "term": "Frog Jump",
+      "definition": "An athletic leap over defenders who attempt an ankle hold or chain block."
+    }
+  ]
+}

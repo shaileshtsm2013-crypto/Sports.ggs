@@ -1,0 +1,34 @@
+{
+  "fouls": [
+    {
+      "name": "Double Contact",
+      "description": "A player hits the ball twice in succession, or the ball contacts various parts of their body in succession.",
+      "penalty": "Loss of rally and point awarded to opponent."
+    },
+    {
+      "name": "Lift / Catch / Carry",
+      "description": "The ball is caught or thrown rather than rebounding cleanly from the hit.",
+      "penalty": "Loss of rally and point awarded to opponent."
+    },
+    {
+      "name": "Net Touch",
+      "description": "A player contacts the top band of the net or interferes with play while playing the ball.",
+      "penalty": "Fault, point to opponent."
+    },
+    {
+      "name": "Rotation Fault",
+      "description": "Players are not in their correct rotational order at the precise instant the server contacts the ball.",
+      "penalty": "Loss of rally and point awarded to opponent; players must correct their positions."
+    },
+    {
+      "name": "Back-row Attack Fault",
+      "description": "A back-row player completes an attack hit from in front of the 3m attack line with the ball entirely above the top of the net.",
+      "penalty": "Fault, point to opponent."
+    },
+    {
+      "name": "Four Hits",
+      "description": "A team hits the ball four times before returning it over the net.",
+      "penalty": "Fault, point to opponent."
+    }
+  ]
+}

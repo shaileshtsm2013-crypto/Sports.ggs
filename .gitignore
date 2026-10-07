@@ -1,0 +1,42 @@
+# Python / Backend
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+*.egg
+.eggs/
+dist/
+build/
+*.spec
+*.log
+.env
+.venv/
+venv/
+env/
+
+# PyInstaller
+dist/
+build/
+*.spec
+
+# Data & Models (large files - store in Git LFS or download at runtime)
+data/
+*.pt
+*.onnx
+*.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Secrets
+*.pem
+*.key
+*.p12

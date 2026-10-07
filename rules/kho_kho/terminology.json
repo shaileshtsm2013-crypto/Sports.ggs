@@ -1,0 +1,40 @@
+{
+  "terms": [
+    {
+      "term": "Chaser",
+      "definition": "A team member in the chasing turn whose goal is to tag out the runners. 8 chasers sit in alternating directions on squares, 1 is the active chaser."
+    },
+    {
+      "term": "Runner / Defender",
+      "definition": "A player from the opposing team who must dodge the active chaser and avoid being tagged. 3 runners enter per batch."
+    },
+    {
+      "term": "Kho",
+      "definition": "The act of touching a sitting teammate on the back while loudly saying 'Kho', transferring the role of active chaser."
+    },
+    {
+      "term": "Active Chaser",
+      "definition": "The single chaser currently permitted to run, pursue runners, and give 'Kho' to sitting teammates."
+    },
+    {
+      "term": "Post",
+      "definition": "Cylindrical wooden poles at each end of the central lane (1.20–1.25m tall). The Free Zone behind the post allows the active chaser to change direction."
+    },
+    {
+      "term": "Central Lane",
+      "definition": "A 24m long, 30cm wide lane running down the center of the court between the two posts."
+    },
+    {
+      "term": "Cross Lane",
+      "definition": "One of 8 lanes perpendicular to the central lane where chasers sit in their squares."
+    },
+    {
+      "term": "Turn / Innings",
+      "definition": "Each match has 2 innings. In each inning, teams alternate between chasing turn (9 minutes) and running turn (9 minutes)."
+    },
+    {
+      "term": "Batch",
+      "definition": "A group of 3 runners that enters the field simultaneously. After all 3 are dismissed, the next batch enters."
+    }
+  ]
+}

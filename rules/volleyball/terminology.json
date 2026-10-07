@@ -1,0 +1,28 @@
+{
+  "terms": [
+    {
+      "term": "Spike / Attack",
+      "definition": "An aggressive overhead smash hit directed forcefully into the opponent court."
+    },
+    {
+      "term": "Block",
+      "definition": "Action of players close to the net to deflect the ball coming from the opponent by reaching higher than the top of the net."
+    },
+    {
+      "term": "Set",
+      "definition": "A precise overhead pass using fingertips to position the ball for an attacking spiker."
+    },
+    {
+      "term": "Dig",
+      "definition": "A defensive passing technique executed to stop a spiked or fast-moving ball from hitting the floor."
+    },
+    {
+      "term": "Libero",
+      "definition": "A specialized defensive player wearing a contrasting jersey who cannot attack, block, or serve (in standard FIVB rules)."
+    },
+    {
+      "term": "Ace",
+      "definition": "A serve that lands directly on the opponent court or is mishandled on reception without another touch."
+    }
+  ]
+}

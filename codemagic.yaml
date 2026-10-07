@@ -1,0 +1,186 @@
+workflows:
+  # ─────────────────────────────────────────
+  # WORKFLOW 1: Android APK
+  # ─────────────────────────────────────────
+  android-release:
+    name: Android APK & AAB
+    max_build_duration: 60
+    instance_type: mac_mini_m2
+
+    environment:
+      java: 17
+      flutter: 3.24.5
+      groups:
+        - keystore_credentials  # Optional: add in Codemagic UI for signed APK
+
+    triggering:
+      events:
+        - push
+        - tag
+      branch_patterns:
+        - pattern: 'main'
+          include: true
+        - pattern: 'master'
+          include: true
+
+    scripts:
+      - name: Create assets placeholder
+        working_directory: frontend
+        script: mkdir -p assets/images
+
+      - name: Flutter pub get
+        working_directory: frontend
+        script: flutter pub get
+
+      - name: Flutter analyze
+        working_directory: frontend
+        script: flutter analyze --no-fatal-infos || true
+
+      - name: Flutter test
+        working_directory: frontend
+        script: flutter test || true
+
+      - name: Build debug APK
+        working_directory: frontend
+        script: flutter build apk --debug
+
+      - name: Build release APK (unsigned)
+        working_directory: frontend
+        script: flutter build apk --release
+
+      - name: Build App Bundle (AAB) for Play Store
+        working_directory: frontend
+        script: flutter build appbundle --release
+
+    artifacts:
+      - frontend/build/app/outputs/flutter-apk/app-debug.apk
+      - frontend/build/app/outputs/flutter-apk/app-release.apk
+      - frontend/build/app/outputs/bundle/release/app-release.aab
+
+    publishing:
+      email:
+        recipients:
+          - your@email.com   # ← replace with your email
+        notify:
+          success: true
+          failure: true
+
+  # ─────────────────────────────────────────
+  # WORKFLOW 2: Android APK (Signed Release)
+  # Only runs when you push a git tag like v1.0.0
+  # ─────────────────────────────────────────
+  android-signed-release:
+    name: Signed Android APK (tag release)
+    max_build_duration: 60
+    instance_type: mac_mini_m2
+
+    environment:
+      java: 17
+      flutter: 3.24.5
+      android_signing:
+        - sports_analyzer_keystore   # configure in Codemagic UI → Code Signing
+      groups:
+        - keystore_credentials
+
+    triggering:
+      events:
+        - tag
+      tag_patterns:
+        - pattern: 'v*'
+          include: true
+
+    scripts:
+      - name: Create assets placeholder
+        working_directory: frontend
+        script: mkdir -p assets/images
+
+      - name: Flutter pub get
+        working_directory: frontend
+        script: flutter pub get
+
+      - name: Build signed release APK
+        working_directory: frontend
+        script: |
+          flutter build apk --release \
+            --build-name=$CM_TAG \
+            --build-number=$BUILD_NUMBER
+
+      - name: Build signed AAB
+        working_directory: frontend
+        script: |
+          flutter build appbundle --release \
+            --build-name=$CM_TAG \
+            --build-number=$BUILD_NUMBER
+
+    artifacts:
+      - frontend/build/app/outputs/flutter-apk/app-release.apk
+      - frontend/build/app/outputs/bundle/release/app-release.aab
+
+    publishing:
+      google_play:                         # Optional: auto-publish to Play Store
+        credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
+        track: internal
+        submit_as_draft: true
+      email:
+        recipients:
+          - your@email.com   # ← replace with your email
+        notify:
+          success: true
+          failure: true
+
+  # ─────────────────────────────────────────
+  # WORKFLOW 3: Windows Desktop EXE
+  # ─────────────────────────────────────────
+  windows-release:
+    name: Windows Desktop EXE
+    max_build_duration: 60
+    instance_type: windows_x2
+
+    environment:
+      flutter: 3.24.5
+      groups:
+        - windows_credentials
+
+    triggering:
+      events:
+        - push
+        - tag
+      branch_patterns:
+        - pattern: 'main'
+          include: true
+        - pattern: 'master'
+          include: true
+
+    scripts:
+      - name: Enable Windows desktop
+        working_directory: frontend
+        script: flutter config --enable-windows-desktop
+
+      - name: Create assets placeholder
+        working_directory: frontend
+        script: New-Item -ItemType Directory -Force -Path assets\images
+
+      - name: Flutter pub get
+        working_directory: frontend
+        script: flutter pub get
+
+      - name: Build Windows release
+        working_directory: frontend
+        script: flutter build windows --release
+
+      - name: Zip Windows bundle
+        script: |
+          Compress-Archive `
+            -Path frontend\build\windows\x64\runner\Release `
+            -DestinationPath SportsAnalyzerAI-Windows-x64.zip
+
+    artifacts:
+      - SportsAnalyzerAI-Windows-x64.zip
+
+    publishing:
+      email:
+        recipients:
+          - your@email.com   # ← replace with your email
+        notify:
+          success: true
+          failure: true
