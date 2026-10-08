@@ -1,0 +1,90 @@
+name: Build APK and EXE Releases
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  # -------------------------------------------------------------------
+  # 1. BUILD ANDROID APK
+  # -------------------------------------------------------------------
+  build-apk:
+    name: Build Android APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install Dependencies
+        run: |
+          if [ -d "frontend" ]; then cd frontend; fi
+          npm install
+
+      - name: Build Android Release APK
+        run: |
+          if [ -d "frontend/android" ]; then
+            cd frontend/android
+          elif [ -d "android" ]; then
+            cd android
+          fi
+          chmod +x gradlew
+          ./gradlew assembleRelease --no-daemon
+
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sports-gg-android-apk
+          path: |
+            **/android/app/build/outputs/apk/release/*.apk
+            **/build/app/outputs/flutter-apk/*.apk
+
+  # -------------------------------------------------------------------
+  # 2. BUILD WINDOWS EXE
+  # -------------------------------------------------------------------
+  build-exe:
+    name: Build Windows EXE
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install Dependencies
+        run: |
+          if (Test-Path "frontend") { Set-Location frontend }
+          npm install
+
+      - name: Build Windows Executable
+        run: |
+          if (Test-Path "frontend") { Set-Location frontend }
+          # Runs electron-builder or tauri if present; falls back to standard npm build
+          npm run build --if-present
+
+      - name: Upload EXE Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sports-gg-windows-exe
+          path: |
+            **/*.exe
+            **/dist/*.exe
+            **/out/*.exe
+            **/release/*.exe
