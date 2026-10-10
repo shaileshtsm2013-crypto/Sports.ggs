@@ -34,6 +34,22 @@ jobs:
         working-directory: frontend
         run: flutter pub get
 
+      - name: Patch Android Repositories if Missing
+        working-directory: frontend/android
+        run: |
+          python3 -c '
+          import os
+          build_gradle_path = "build.gradle"
+          if os.path.exists(build_gradle_path):
+              with open(build_gradle_path, "r") as f:
+                  content = f.read()
+              if "google()" not in content:
+                  print("Injecting google() and mavenCentral() repositories...")
+                  content += "\nallprojects {\n    repositories {\n        google()\n        mavenCentral()\n    }\n}\n"
+                  with open(build_gradle_path, "w") as f:
+                      f.write(content)
+          '
+
       - name: Build Release APK
         working-directory: frontend
         run: flutter build apk --release
