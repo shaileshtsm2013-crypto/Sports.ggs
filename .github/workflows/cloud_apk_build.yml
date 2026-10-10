@@ -27,14 +27,12 @@ jobs:
           channel: 'stable'
           cache: true
 
-      - name: Check and Create Android Platform Files if Missing
+      - name: Accept Android Licenses
+        run: yes | flutter doctor --android-licenses || true
+
+      - name: Install Dependencies
         working-directory: frontend
-        run: |
-          if [ ! -d "android" ]; then
-            flutter create --platforms=android .
-          else
-            flutter pub get
-          fi
+        run: flutter pub get
 
       - name: Build Release APK
         working-directory: frontend
