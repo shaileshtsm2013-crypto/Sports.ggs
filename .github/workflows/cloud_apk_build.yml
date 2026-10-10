@@ -1,96 +1,96 @@
-name: Build Android APK in Cloud
+name: Build Flutter APK
 
 on:
   push:
-    branches: [ "main", "master" ]
+    branches:
+      - main
+      - master
   pull_request:
-    branches: [ "main", "master" ]
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
   build:
-    name: Build Flutter APK
+    name: Build Android Release APK
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        working-directory: frontend
+
     steps:
-      - name: Checkout Repository
+      # 1. Download repository source code
+      - name: Checkout repository
         uses: actions/checkout@v4
 
+      # 2. Install Java for Android Gradle builds
       - name: Set up Java
         uses: actions/setup-java@v4
         with:
-          distribution: 'zulu'
+          distribution: temurin
           java-version: '17'
 
-      - name: Set up Flutter SDK
+      # 3. Install Flutter
+      - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          channel: 'stable'
+          channel: stable
+          flutter-version: '3.35.7'
           cache: true
+          cache-dependency-path: frontend/pubspec.lock
 
-      - name: Set up Android local.properties
+      # 4. Display environment versions
+      - name: Check Flutter and Java
         run: |
-          echo "sdk.dir=$ANDROID_SDK_ROOT" > frontend/android/local.properties
+          flutter --version
+          dart --version
+          java -version
+          flutter doctor -v
 
-      - name: R&D Fix - Inject Repositories into settings.gradle
+      # 5. Verify project files
+      - name: Check Flutter project
         run: |
-          python3 -c '
-          import os, re
-          settings_path = "frontend/android/settings.gradle"
-          if os.path.exists(settings_path):
-              with open(settings_path, "r") as f:
-                  code = f.read()
-              
-              # Ensure pluginManagement has google & mavenCentral
-              if "pluginManagement {" in code:
-                  if "google()" not in code[:code.find("dependencyResolutionManagement") if "dependencyResolutionManagement" in code else len(code)]:
-                      code = re.sub(
-                          r"(pluginManagement\s*\{[^}]*repositories\s*\{)",
-                          r"\1\n        google()\n        mavenCentral()\n        gradlePluginPortal()",
-                          code,
-                        1
-                      )
-              
-              # Ensure dependencyResolutionManagement has google & mavenCentral and allows project repos
-              if "dependencyResolutionManagement {" in code:
-                  code = code.replace("RepositoriesMode.FAIL_ON_PROJECT_REPOS", "RepositoriesMode.PREFER_PROJECT")
-                  if "google()" not in code[code.find("dependencyResolutionManagement"):]:
-                      code = re.sub(
-                          r"(dependencyResolutionManagement\s*\{[^}]*repositories\s*\{)",
-                          r"\1\n        google()\n        mavenCentral()",
-                          code,
-                          1
-                      )
-              else:
-                  code += """
-          dependencyResolutionManagement {
-              repositoriesMode.set(RepositoriesMode.PREFER_PROJECT)
-              repositories {
-                  google()
-                  mavenCentral()
-              }
+          test -f pubspec.yaml || {
+            echo "ERROR: frontend/pubspec.yaml not found"
+            exit 1
           }
-          """
-              
-              with open(settings_path, "w") as f:
-                  f.write(code)
-              print("Successfully patched settings.gradle for cloud Gradle build!")
-          else:
-              print("ERROR: settings.gradle not found at expected path.")
-          '
 
-      - name: Accept Android Licenses
-        run: yes | flutter doctor --android-licenses || true
+          test -f android/settings.gradle -o \
+               -f android/settings.gradle.kts || {
+            echo "ERROR: Android settings.gradle file not found"
+            exit 1
+          }
 
-      - name: Install Dependencies
-        working-directory: frontend
+          test -f android/app/build.gradle -o \
+               -f android/app/build.gradle.kts || {
+            echo "ERROR: Android app Gradle file not found"
+            exit 1
+          }
+
+      # 6. Download Flutter dependencies
+      - name: Install Flutter dependencies
         run: flutter pub get
 
-      - name: Build Release APK
-        working-directory: frontend
+      # 7. Check Dart code
+      - name: Analyze Flutter project
+        run: dart analyze --fatal-infos
+        continue-on-error: true
+
+      # 8. Build release APK
+      - name: Build release APK
         run: flutter build apk --release
 
-      - name: Upload APK Artifact
+      # 9. Upload the generated APK
+      - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
-          name: app-release-apk
+          name: sports-release-apk
           path: frontend/build/app/outputs/flutter-apk/app-release.apk
+          if-no-files-found: error
+          retention-days: 14
+
