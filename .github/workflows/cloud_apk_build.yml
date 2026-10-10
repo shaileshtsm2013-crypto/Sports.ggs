@@ -27,40 +27,16 @@ jobs:
           channel: 'stable'
           cache: true
 
+      - name: Set up Android local.properties
+        run: |
+          echo "sdk.dir=$ANDROID_SDK_ROOT" > frontend/android/local.properties
+
       - name: Accept Android Licenses
         run: yes | flutter doctor --android-licenses || true
 
       - name: Install Dependencies
         working-directory: frontend
         run: flutter pub get
-
-      - name: Fix Android Repositories and Plugin Management
-        working-directory: frontend/android
-        run: |
-          python3 -c '
-          import os
-          
-          # Ensure pluginManagement has google() in settings.gradle
-          if os.path.exists("settings.gradle"):
-              with open("settings.gradle", "r") as f:
-                  content = f.read()
-              if "google()" not in content:
-                  print("Injecting google() into settings.gradle pluginManagement...")
-                  plugin_mgmt = "pluginManagement {\n    repositories {\n        google()\n        mavenCentral()\n        gradlePluginPortal()\n    }\n}\n"
-                  content = plugin_mgmt + content
-                  with open("settings.gradle", "w") as f:
-                      f.write(content)
-
-          # Ensure allprojects has google() in build.gradle
-          if os.path.exists("build.gradle"):
-              with open("build.gradle", "r") as f:
-                  content = f.read()
-              if "google()" not in content:
-                  print("Injecting google() into build.gradle...")
-                  content += "\nallprojects {\n    repositories {\n        google()\n        mavenCentral()\n    }\n}\n"
-                  with open("build.gradle", "w") as f:
-                      f.write(content)
-          '
 
       - name: Build Release APK
         working-directory: frontend
