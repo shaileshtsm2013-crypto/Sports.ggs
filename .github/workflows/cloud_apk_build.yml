@@ -27,9 +27,14 @@ jobs:
           channel: 'stable'
           cache: true
 
-      - name: Install Dependencies
+      - name: Check and Create Android Platform Files if Missing
         working-directory: frontend
-        run: flutter pub get
+        run: |
+          if [ ! -d "android" ]; then
+            flutter create --platforms=android .
+          else
+            flutter pub get
+          fi
 
       - name: Build Release APK
         working-directory: frontend
