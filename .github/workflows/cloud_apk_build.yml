@@ -34,19 +34,31 @@ jobs:
         working-directory: frontend
         run: flutter pub get
 
-      - name: Patch Android Repositories if Missing
+      - name: Fix Android Repositories and Plugin Management
         working-directory: frontend/android
         run: |
           python3 -c '
           import os
-          build_gradle_path = "build.gradle"
-          if os.path.exists(build_gradle_path):
-              with open(build_gradle_path, "r") as f:
+          
+          # Ensure pluginManagement has google() in settings.gradle
+          if os.path.exists("settings.gradle"):
+              with open("settings.gradle", "r") as f:
                   content = f.read()
               if "google()" not in content:
-                  print("Injecting google() and mavenCentral() repositories...")
+                  print("Injecting google() into settings.gradle pluginManagement...")
+                  plugin_mgmt = "pluginManagement {\n    repositories {\n        google()\n        mavenCentral()\n        gradlePluginPortal()\n    }\n}\n"
+                  content = plugin_mgmt + content
+                  with open("settings.gradle", "w") as f:
+                      f.write(content)
+
+          # Ensure allprojects has google() in build.gradle
+          if os.path.exists("build.gradle"):
+              with open("build.gradle", "r") as f:
+                  content = f.read()
+              if "google()" not in content:
+                  print("Injecting google() into build.gradle...")
                   content += "\nallprojects {\n    repositories {\n        google()\n        mavenCentral()\n    }\n}\n"
-                  with open(build_gradle_path, "w") as f:
+                  with open("build.gradle", "w") as f:
                       f.write(content)
           '
 
