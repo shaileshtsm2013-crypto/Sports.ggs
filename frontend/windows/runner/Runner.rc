@@ -1,0 +1,30 @@
+#pragma code_page(65001)
+#include "resource.h"
+
+#define IDI_APP_ICON 101
+
+IDI_APP_ICON ICON "resources\app_icon.ico"
+
+VS_VERSION_INFO VERSIONINFO
+FILEVERSION 1,0,0,1
+PRODUCTVERSION 1,0,0,1
+    BEGIN
+        BLOCK "StringFileInfo"
+        BEGIN
+            BLOCK "040904e4"
+            BEGIN
+                VALUE "CompanyName", "Sports Analyzer AI" "\0"
+                VALUE "FileDescription", "Sports Analyzer AI" "\0"
+                VALUE "FileVersion", "1.0.0.1" "\0"
+                VALUE "InternalName", "sports_analyzer_ai" "\0"
+                VALUE "LegalCopyright", "Copyright (C) 2026 Sports Analyzer AI. All rights reserved." "\0"
+                VALUE "OriginalFilename", "sports_analyzer_ai.exe" "\0"
+                VALUE "ProductName", "Sports Analyzer AI" "\0"
+                VALUE "ProductVersion", "1.0.0.1" "\0"
+            END
+        END
+        BLOCK "VarFileInfo"
+        BEGIN
+            VALUE "Translation", 0x0409, 1252
+        END
+    END
