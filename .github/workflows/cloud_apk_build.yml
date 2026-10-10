@@ -31,6 +31,53 @@ jobs:
         run: |
           echo "sdk.dir=$ANDROID_SDK_ROOT" > frontend/android/local.properties
 
+      - name: R&D Fix - Inject Repositories into settings.gradle
+        run: |
+          python3 -c '
+          import os, re
+          settings_path = "frontend/android/settings.gradle"
+          if os.path.exists(settings_path):
+              with open(settings_path, "r") as f:
+                  code = f.read()
+              
+              # Ensure pluginManagement has google & mavenCentral
+              if "pluginManagement {" in code:
+                  if "google()" not in code[:code.find("dependencyResolutionManagement") if "dependencyResolutionManagement" in code else len(code)]:
+                      code = re.sub(
+                          r"(pluginManagement\s*\{[^}]*repositories\s*\{)",
+                          r"\1\n        google()\n        mavenCentral()\n        gradlePluginPortal()",
+                          code,
+                        1
+                      )
+              
+              # Ensure dependencyResolutionManagement has google & mavenCentral and allows project repos
+              if "dependencyResolutionManagement {" in code:
+                  code = code.replace("RepositoriesMode.FAIL_ON_PROJECT_REPOS", "RepositoriesMode.PREFER_PROJECT")
+                  if "google()" not in code[code.find("dependencyResolutionManagement"):]:
+                      code = re.sub(
+                          r"(dependencyResolutionManagement\s*\{[^}]*repositories\s*\{)",
+                          r"\1\n        google()\n        mavenCentral()",
+                          code,
+                          1
+                      )
+              else:
+                  code += """
+          dependencyResolutionManagement {
+              repositoriesMode.set(RepositoriesMode.PREFER_PROJECT)
+              repositories {
+                  google()
+                  mavenCentral()
+              }
+          }
+          """
+              
+              with open(settings_path, "w") as f:
+                  f.write(code)
+              print("Successfully patched settings.gradle for cloud Gradle build!")
+          else:
+              print("ERROR: settings.gradle not found at expected path.")
+          '
+
       - name: Accept Android Licenses
         run: yes | flutter doctor --android-licenses || true
 
