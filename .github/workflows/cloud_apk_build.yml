@@ -30,12 +30,14 @@ jobs:
 
       - name: Install Dependencies
         run: flutter pub get
+        working-directory: frontend
 
       - name: Build Release APK
         run: flutter build apk --release
+        working-directory: frontend
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: app-release-apk
-          path: build/app/outputs/flutter-apk/app-release.apk
+          path: frontend/build/app/outputs/flutter-apk/app-release.apk
