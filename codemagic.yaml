@@ -1,7 +1,7 @@
 workflows:
   android-apk:
-    name: Android APK Build
-    max_build_duration: 60
+    name: "🤖 Android APK — Release"
+    max_build_duration: 45
     instance_type: linux_x2
 
     environment:
@@ -21,58 +21,48 @@ workflows:
       cancel_previous_builds: true
 
     scripts:
-      - name: Create assets directory
+      - name: Set up assets directory
         script: |
           mkdir -p frontend/assets/images
           touch frontend/assets/images/.gitkeep
 
-      - name: Get Flutter packages
+      - name: Flutter pub get
         script: |
           cd frontend
           flutter pub get
-
-      - name: Build debug APK
-        script: |
-          cd frontend
-          flutter build apk \
-            --debug \
-            --build-name=1.0.0 \
-            --build-number=$BUILD_NUMBER
 
       - name: Build release APK
         script: |
           cd frontend
           flutter build apk \
             --release \
-            --build-name=1.0.0 \
+            --build-name=${CM_TAG:-1.0.$BUILD_NUMBER} \
             --build-number=$BUILD_NUMBER
 
-      - name: Build App Bundle (AAB)
+      - name: Build release AAB (Play Store)
         script: |
           cd frontend
           flutter build appbundle \
             --release \
-            --build-name=1.0.0 \
+            --build-name=${CM_TAG:-1.0.$BUILD_NUMBER} \
             --build-number=$BUILD_NUMBER
 
       - name: Rename artifacts
         script: |
-          mv frontend/build/app/outputs/flutter-apk/app-debug.apk \
-             frontend/build/app/outputs/flutter-apk/SportsAnalyzerAI-debug.apk
+          TAG=${CM_TAG:-build-$BUILD_NUMBER}
           mv frontend/build/app/outputs/flutter-apk/app-release.apk \
-             frontend/build/app/outputs/flutter-apk/SportsAnalyzerAI-release.apk
+             frontend/build/app/outputs/flutter-apk/SportsAnalyzerAI-${TAG}-release.apk
           mv frontend/build/app/outputs/bundle/release/app-release.aab \
-             frontend/build/app/outputs/bundle/release/SportsAnalyzerAI-release.aab
+             frontend/build/app/outputs/bundle/release/SportsAnalyzerAI-${TAG}-release.aab
 
     artifacts:
-      - frontend/build/app/outputs/flutter-apk/SportsAnalyzerAI-debug.apk
-      - frontend/build/app/outputs/flutter-apk/SportsAnalyzerAI-release.apk
-      - frontend/build/app/outputs/bundle/release/SportsAnalyzerAI-release.aab
+      - frontend/build/app/outputs/flutter-apk/SportsAnalyzerAI-*-release.apk
+      - frontend/build/app/outputs/bundle/release/SportsAnalyzerAI-*-release.aab
 
     publishing:
       email:
         recipients:
-          - your@email.com     # ← change to your email
+          - shaileshtsm2013@gmail.com
         notify:
           success: true
           failure: true
