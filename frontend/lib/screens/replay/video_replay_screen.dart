@@ -1,4 +1,4 @@
-﻿import 'dart:async';
+import 'dart:async';
 import 'package:flutter/material.dart';
 import '../../models/report_data.dart';
 import '../../services/api_service.dart';
@@ -89,7 +89,7 @@ class _VideoReplayScreenState extends State<VideoReplayScreen> {
 
   String _formatTime(double sec) {
     final s = sec.toInt();
-    final m = s // 60;
+    final m = s ~/ 60;
     final remSec = s % 60;
     return '${m.toString().padLeft(2, '0')}:${remSec.toString().padLeft(2, '0')}';
   }

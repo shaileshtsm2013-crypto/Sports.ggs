@@ -183,18 +183,18 @@ class AnalysisProvider extends ChangeNotifier {
     if (_volleyball != null) {
       parts.add('Rally state: $_rallyState');
       if (_activeViolations.isNotEmpty) {
-        parts.add('Active violations: ${_activeViolations.map((v) => v.type).join(', ')}');
+        parts.add('Active violations: ${_activeViolations.map((v) => v.violationType).join(', ')}');
       }
       if (_recentEvents.isNotEmpty) {
-        parts.add('Recent events: ${_recentEvents.take(3).map((e) => e.type).join(', ')}');
+        parts.add('Recent events: ${_recentEvents.take(3).map((e) => e.eventType).join(', ')}');
       }
     }
     if (_kabaddi != null) {
       parts.add('Kabaddi raid state: ${_kabaddi!.raidState}');
-      parts.add('Score — Team A: ${_kabaddi!.teamAScore}, Team B: ${_kabaddi!.teamBScore}');
+      parts.add('Raid points: ${_kabaddi!.raidPoints}, Do-or-Die: ${_kabaddi!.doOrDieActive}');
     }
     if (_khoKho != null) {
-      parts.add('Kho Kho chasers: ${_khoKho!.activeChasers}, runners out: ${_khoKho!.runnersOut}');
+      parts.add('Kho Kho active chaser: ${_khoKho!.activeChaserId}, runners remaining: ${_khoKho!.runnersRemaining}');
     }
     return parts.join(' | ');
   }
