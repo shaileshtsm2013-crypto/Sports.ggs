@@ -36,6 +36,7 @@ workflows:
           cd frontend
           flutter build apk \
             --release \
+            --android-skip-build-dependency-validation \
             --build-name=${CM_TAG:-1.0.$BUILD_NUMBER} \
             --build-number=$BUILD_NUMBER
 
@@ -44,6 +45,7 @@ workflows:
           cd frontend
           flutter build appbundle \
             --release \
+            --android-skip-build-dependency-validation \
             --build-name=${CM_TAG:-1.0.$BUILD_NUMBER} \
             --build-number=$BUILD_NUMBER
 

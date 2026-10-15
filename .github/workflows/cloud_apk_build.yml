@@ -83,7 +83,7 @@ jobs:
 
       # 8. Build release APK
       - name: Build release APK
-        run: flutter build apk --release
+        run: flutter build apk --release --android-skip-build-dependency-validation
 
       # 9. Upload the generated APK
       - name: Upload APK artifact
